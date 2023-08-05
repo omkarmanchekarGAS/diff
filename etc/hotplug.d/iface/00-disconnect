@@ -1,0 +1,10 @@
+[ "ifdown" = "${ACTION}" ] && [ "wwan" = "${INTERFACE}" ] && {
+	python /root/set_disconnected.py
+	sleep 20
+	a=$(ps | grep wifi_config | grep -v grep | awk '{print length}')
+	if [ $a -lt 1 ]; then
+		python /root/wifi_config.py &
+	fi
+
+}
+

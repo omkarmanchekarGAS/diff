@@ -1,0 +1,14 @@
+Package: python3-setuptools
+Version: 63.2.0-1
+Depends: libc, python3, python3-pkg-resources
+Source: feeds/packages/lang/python/python3
+SourceName: python3-setuptools
+License: MIT
+LicenseFiles: LICENSE
+Section: lang
+SourceDateEpoch: 1665503837
+CPE-ID: cpe:/a:python:python
+Maintainer: Jeffery To <jeffery.to@gmail.com>
+Architecture: mipsel_24kc
+Installed-Size: 725651
+Description:  Python 3.10 setuptools module

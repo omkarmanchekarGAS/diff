@@ -1,0 +1,14 @@
+Package: i2c-tools
+Version: 4.3-1
+Depends: libc, libi2c
+Source: feeds/packages/utils/i2c-tools
+SourceName: i2c-tools
+License: GPL-2.0-or-later LGPL-2.1-or-later
+LicenseFiles: COPYING COPYING.LGPL
+Section: utils
+SourceDateEpoch: 1627787682
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 18344
+Description:  This package contains an heterogeneous set of I2C tools for Linux. These tools
+ were originally part of the lm-sensors package.

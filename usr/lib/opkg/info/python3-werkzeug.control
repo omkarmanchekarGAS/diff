@@ -1,0 +1,13 @@
+Package: python3-werkzeug
+Version: 2.0.2-1
+Depends: libc, python3-light, python3-email
+Source: feeds/packages/lang/python/Werkzeug
+SourceName: python3-werkzeug
+License: BSD-3-Clause
+LicenseFiles: LICENSE.rst
+Section: lang
+SourceDateEpoch: 1636942574
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 348905
+Description:  The comprehensive WSGI web application library.

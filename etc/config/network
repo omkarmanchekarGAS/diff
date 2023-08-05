@@ -1,0 +1,71 @@
+
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config globals 'globals'
+	option ula_prefix 'fd37:8453:da23::/48'
+
+config device
+	option name 'br-lan'
+	option type 'bridge'
+	list ports 'eth0.1'
+
+config interface 'lan'
+	option device 'br-lan'
+	option proto 'static'
+	option netmask '255.255.255.0'
+	option ipaddr '192.168.5.7'
+
+config device
+	option name 'br-vlan'
+	option type 'bridge'
+	list ports 'eth0.3'
+
+config interface 'vlan'
+	option device 'br-vlan'
+	option proto 'static'
+	option netmask '255.255.255.0'
+	option ipaddr '192.168.6.7'
+
+config device
+	option name 'eth0.2'
+	option macaddr '0c:cf:89:6f:9b:f8'
+
+config interface 'wan'
+	option device 'eth0.2'
+	option proto 'dhcp'
+
+config interface 'wan6'
+	option proto 'dhcpv6'
+	option device 'eth0.2'
+
+config interface 'wan2'
+	option ifname 'ppp0'
+	option proto 'ppp'
+	option device '/dev/ttyUSB2'
+	option speed '921600'
+	option file '/etc/ppp/peers/att-QBG95'
+	option connect '/usr/sbin/chat -v -f /etc/ppp/peers/att-QBG95-chat'
+	option ipv6 'auto'
+
+config switch
+	option name 'switch0'
+	option reset '1'
+	option enable_vlan '1'
+
+config switch_vlan
+	option device 'switch0'
+	option vlan '1'
+	option ports '1 2 3 4 6t'
+
+config switch_vlan
+	option device 'switch0'
+	option vlan '2'
+	option ports '0 6t'
+
+config interface 'wwan'
+	option proto 'dhcp'
+

@@ -1,0 +1,62 @@
+config wifi-device 'radio0'
+	option type 'mac80211'
+	option path 'platform/10300000.wmac'
+	option channel '1'
+	option band '2g'
+	option htmode 'HT20'
+	option disabled '0'
+
+config wifi-iface 'dashboard'
+	option device 'radio0'
+	option network 'vlan'
+	option mode 'ap'
+	option ssid '' # code appends serial number to this
+	option encryption 'psk2'
+	option disabled '1'
+	option key 'GAS_Station!'
+
+config wifi-iface 'provisioning'
+	option device 'radio0'
+	option network 'vlan'
+	option mode 'ap'
+	option ssid 'Provisional Network'
+	option encryption 'psk2'
+	option disabled '1'
+	option key 'utdK?yg;[w/7,6+F' # not configured by code
+	option hidden '1'
+
+config wifi-iface 'real'
+	option device 'radio0'
+	option network 'lan'
+	option mode 'ap'
+	option ssid '' # set by wifi_config.py
+	option encryption 'psk2'
+	option disabled '1'
+	option key '' # set by wifi_config.py
+	option hidden '1'
+
+config wifi-iface 'client'
+	option device 'radio0'
+	option network 'wwan'
+	option mode 'sta'
+	option ssid '' # set from db by dashboard
+	option encryption '' # same
+	option disabled '1' # same
+	option key '' # same
+
+config wifi-iface 'child_connect'
+	option device 'radio0'
+	option network 'wwan'
+	option mode 'sta'
+	option ssid '' # set by wifi config when received from parent
+	option encryption 'psk2'
+	option disabled '1'
+	option key ''
+
+config wifi-iface 'dev'
+	option device 'radio0'
+	option network 'lan'
+	option mode 'ap'
+	option ssid ''
+	option encryption 'none'
+	option disabled '1'

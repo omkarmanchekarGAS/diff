@@ -1,0 +1,11 @@
+Package: kmod-i2c-mt7628
+Version: 5.10.161-1
+Depends: kernel (=5.10.161-1-c6d60e8dcf20ef3ead5f882b1ce1595b), kmod-i2c-core
+Source: package/kernel/linux
+SourceName: kmod-i2c-mt7628
+License: GPL-2.0
+Section: kernel
+SourceDateEpoch: 1676992807
+Architecture: mipsel_24kc
+Installed-Size: 2700
+Description:  Kernel modules for enable mt7621 i2c controller.

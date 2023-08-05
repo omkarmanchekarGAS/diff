@@ -1,0 +1,2 @@
+/lib/modules/5.10.161/usb_wwan.ko
+/etc/modules.d/usb-serial-wwan

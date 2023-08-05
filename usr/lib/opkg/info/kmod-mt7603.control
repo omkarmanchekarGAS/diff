@@ -1,0 +1,12 @@
+Package: kmod-mt7603
+Version: 5.10.161+2022-09-06-d7054646-5
+Depends: kernel (=5.10.161-1-c6d60e8dcf20ef3ead5f882b1ce1595b), kmod-mac80211, kmod-mt76-core
+Source: package/kernel/mt76
+SourceName: kmod-mt7603
+License: GPLv2
+Section: kernel
+SourceDateEpoch: 1676992807
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: mipsel_24kc
+Installed-Size: 96180
+Description:  MediaTek MT7603 wireless driver

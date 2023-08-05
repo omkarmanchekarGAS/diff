@@ -1,0 +1,2 @@
+/lib/modules/5.10.161/i2c-smbus.ko
+/etc/modules.d/58-i2c-smbus

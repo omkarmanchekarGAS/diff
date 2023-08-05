@@ -1,0 +1,4 @@
+[ "ifup" = "${ACTION}" ] && [ "wlan0" = "${DEVICE}" ] && [ "wwan" = "${INTERFACE}" ] && {
+
+	python /root/set_connected.py
+}

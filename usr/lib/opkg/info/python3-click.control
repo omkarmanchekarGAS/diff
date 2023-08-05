@@ -1,0 +1,13 @@
+Package: python3-click
+Version: 8.0.3-1
+Depends: libc, python3-light
+Source: feeds/packages/lang/python/click
+SourceName: python3-click
+License: BSD-3-Clause
+LicenseFiles: LICENSE
+Section: lang
+SourceDateEpoch: 1636942560
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 120944
+Description:  Composable command line interface toolkit

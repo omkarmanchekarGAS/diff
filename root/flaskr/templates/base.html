@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<title>Green Action Studio Configuration Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<body class="bg-gray-50">
+  <header>
+    <div class="container mx-auto">
+      <div class="flex flex-row items-center justify-between">
+        <nav class="flex flex-row items-center">
+          <img
+            class="h-24 w-auto"
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Green Action Studio"
+          />
+          <ul class="flex flex-row items-center">
+            <li class="pl-6">
+              <a
+                href="/general/"
+                class="text-sm font-medium text-slate-800 hover:text-emerald-500"
+                >Device Information</a
+              >
+            </li>
+            <li class="pl-6">
+              <a
+                href="/ocpp/"
+                class="text-sm font-medium text-slate-800 hover:text-emerald-500"
+                >OCPP Settings</a
+              >
+            </li>
+            <li class="pl-6">
+              <a
+                href="/communication/"
+                class="text-sm font-medium text-slate-800 hover:text-emerald-500"
+                >Communication Settings</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div>
+          <a
+            href="/reset/"
+            type="button"
+            class="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >Reset Defaults</a
+          >
+          <a
+            href="/reboot/"
+            type="button"
+            class="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >Reboot</a
+          >
+          <a
+            href="/logout/"
+            type="button"
+            class="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >Log Out</a
+          >
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="content pt-12">
+    <div class="container mx-auto">{% block content %}{% endblock %}</div>
+  </section>
+  <footer class="text-center p-10">
+    <span class="text-xs text-gray-400"
+      >Copyright &copy; 2023 Green Action Studio, LLC. All Rights Reserved.
+    </span>
+  </footer>
+</body>
+<script>
+  const checkEl = (id) => {
+    var myEl = document.getElementById(id);
+    if (myEl != null) {
+      myEl.checked = true;
+    }
+  };
+
+  const enableEl = (id) => {
+    if(document.getElementById("olm") == null){
+      return;
+    }
+    var enabled = document.getElementById("olm").checked;
+    var myEl = document.getElementById(id);
+    if(myEl != null && enabled){
+      myEl.disabled = false;
+    }
+    else if(myEl != null){
+      myEl.disabled = true;
+      myEl.checked = true;
+      myEl.value = true;
+    }
+    enableEl2();
+  };
+  const enableEl2 = () => {
+    if(document.getElementById("fm") == null){
+      return;
+    }
+    var chk = document.getElementById("fm").checked;
+    if(chk){
+      document.getElementById("dpkh").value=(0.00).toFixed(2);
+      document.getElementById("prk").value=(0.00).toFixed(2);
+      document.getElementById("acf").value=(0.00).toFixed(2);
+      document.getElementById("dpkh").disabled=true;
+      document.getElementById("prk").disabled=true;
+      document.getElementById("acf").disabled=true;
+    }
+    else{
+      document.getElementById("dpkh").value= parseFloat(document.getElementById("dpkh").value).toFixed(2);
+      document.getElementById("prk").value= parseFloat(document.getElementById("prk").value).toFixed(2);
+      document.getElementById("acf").value= parseFloat(document.getElementById("acf").value).toFixed(2);
+      document.getElementById("dpkh").disabled=false;
+      document.getElementById("prk").disabled=false;
+      document.getElementById("acf").disabled=false;
+    }
+  };
+
+  const disableEl = (id) => {
+    var myEl = document.getElementById(id);
+    if(myEl != null){
+      myEl.disabled = true;
+      myEl.value = true;
+    }
+  };
+
+  const checkSel = (id, option) => {
+    var myEl = document.getElementById(id);
+    console.log(myEl)
+    if (myEl != null) {
+      if (option == "WPA-PSK+WPA2-PSK") {
+        querySelect = document.querySelector("#wpwp");
+        myEl.selectedIndex = querySelect.index;
+      } else {
+        querySelect = document.querySelector("#" + option);
+        myEl.selectedIndex = querySelect.index; //Needs to be updated
+      }
+    }
+  };
+
+  if ("{{data[0][6]}}" == 1 || "{{data[0][6]}}" == "True" ) {
+    checkEl("rcar");
+  }
+  if ("{{data[0][7]}}" == 1 || "{{data[0][7]}}" == "True") {
+    checkEl("ventilation");
+  }
+  if ("{{data[0][34]}}" == 1 || "{{data[0][34]}}" == "True") {
+    checkEl("stevd");
+  }
+  if ("{{data[0][35]}}" == 1 || "{{data[0][35]}}" == "True") {
+    checkEl("stia");
+  }
+  if ("{{data[0][68]}}" == 1 || "{{data[0][68]}}" == "True") {
+    console.log("olm true")
+    if(document.getElementById("olm") != null){
+      checkEl("olm");
+      enableEl("fm");
+      if ("{{data[0][69]}}" == 1 || "{{data[0][69]}}" == "True") {
+        console.log("fm true");
+        checkEl("fm");
+        enableEl2();
+      }
+    }
+  }
+  else if ("{{data[0][68]}}" == 0 || "{{data[0][68]}}" == "False"){ //offline mode so free mode should always be true, custom pricing disabled
+    checkEl("fm");
+    disableEl("fm");
+    enableEl2();
+  }
+  /*if ("{{data[0][70]}}" != null) {
+    checkSel("sp", "{{data[0][70]}}");
+  }
+  if ("{{data[0][64]}}" != null) {
+    checkSel("nm", "{{data[0][64]}}");
+  }
+  if ("{{data[0][66]}}" != null) {
+    checkSel("nc", "{{data[0][66]}}");
+  }*/
+
+  const add_ops = (id, val, opts) =>{
+    var elem = document.getElementById(id);
+    if(elem == null){
+      return;
+    }
+    while (elem.firstChild) {
+      elem.removeChild(elem.lastChild);
+    }
+    var newOption = document.createElement("option");
+    newOption.value = val;
+    newOption.text = val;
+    newOption.id = val;
+    newOption.innerHTML = val;
+    elem.appendChild(newOption);
+    console.log(val)
+    for (i = 0; i < opts.length; i++) {
+      if(opts[i] != elem.value){
+        var newOption = document.createElement("option");
+        newOption.value = opts[i];
+        newOption.text = opts[i];
+        newOption.id = opts[i];
+        newOption.innerHTML = opts[i];
+        elem.appendChild(newOption);
+      }
+    }
+    console.log(elem.options);
+  };
+
+  add_ops("nm", "{{data[0][45]}}", ["Direct", "Client", "Gateway"])
+
+
+
+  var btn = document.getElementById("wifi");
+  console.log(btn);
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "{{ url_for('wifi') }}");
+    console.log("{{ url_for('wifi') }}");
+    document.getElementById("wifi").innerHTML = "Loading...";
+    xhr.onload = function () {
+      wifiData = (this.responseText).slice(1,-1).split(",");
+      wifiData[0] = wifiData[0].slice(1,-1);
+      for (i = 1; i < wifiData.length; i++)
+      {
+        wifiData[i] = wifiData[i].slice(2,-1);
+      }
+      console.log(wifiData);
+      var select = document.getElementById("wnn2");
+      while (select.firstChild) {
+        select.removeChild(select.lastChild);
+    }
+      for (i = 0; i < wifiData.length; i++) {
+        var newOption = document.createElement("option");
+        newOption.value = wifiData[i];
+        newOption.text = wifiData[i];
+        newOption.id = wifiData[i];
+        console.log(wifiData[i]);
+        console.log(newOption);
+        console.log(select);
+        select.appendChild(newOption);
+      }
+      document.getElementById("wifi").innerHTML = "Scan";
+    };
+    xhr.send();
+  });
+
+  var btn2 = document.getElementById("wifi2");
+  console.log(btn2);
+  btn2.addEventListener("click", (event) => {
+    document.getElementById("wifi2").innerHTML = "Connecting...";
+  });
+</script>

@@ -1,0 +1,14 @@
+Package: python3-pip
+Version: 22.2.2-1
+Depends: libc, python3, python3-setuptools, python-pip-conf
+Source: feeds/packages/lang/python/python3
+SourceName: python3-pip
+License: MIT
+LicenseFiles: LICENSE.txt
+Section: lang
+SourceDateEpoch: 1665503837
+CPE-ID: cpe:/a:python:python
+Maintainer: Jeffery To <jeffery.to@gmail.com>
+Architecture: mipsel_24kc
+Installed-Size: 1933540
+Description:  Python 3.10 pip module

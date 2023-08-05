@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flask-Dropzone Demo: Large File</title>
+  {{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 400px;') }}
+</head>
+<body>
+  {{ dropzone.create(action='upload') }}
+  {{ dropzone.config() }}
+</body>
+</html>
+<!--<head>
+    <title>File Dropper</title>
+</head>
+<body>
+  {{ dropzone.create(action="/ocpp?f=ocpp.firm") }}
+  {{ dropzone.config() }}
+    <form
+        method="POST"
+        action=action="/ocpp?f=ocpp.firm"
+        id="firm"
+        class="dropzone"
+        enctype="multipart/form-data"
+    >
+    </form>
+    <script type="application/javascript">
+        Dropzone.options.firm = {
+            paramName: "file",
+            chunking: true,
+            forceChunking: true,
+            url: "/ocpp/",
+            maxFilesize: 1025, // megabytes
+            chunkSize: 1000000 // bytes
+        }
+    </script>
+</body>
+</html>-->

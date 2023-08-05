@@ -1,0 +1,12 @@
+# Essential files that will be always kept
+/etc/hosts
+/etc/inittab
+/etc/group
+/etc/passwd
+/etc/profile
+/etc/shadow
+/etc/shells
+/etc/shinit
+/root/data/data.db
+/root/data/users.db
+/root/data/stpm.db

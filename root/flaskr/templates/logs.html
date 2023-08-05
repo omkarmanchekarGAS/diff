@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% block content %}
+
+<div>
+  <form method="POST" id="logForm" action="/logs/">
+    <div class="mt-10 sm:mt-0">
+      <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:col-span-1">
+          <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">
+              View Logs
+            </h3>
+          </div>
+        </div>
+
+        <div class="mt-5 md:col-span-2 md:mt-0">
+          <div class="overflow-hidden shadow sm:rounded-md">
+            <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="nm"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Choose Log Group</label
+                >
+                <select
+                  type="text"
+                  name="logTag"
+                  id="logTag"
+                  value="ALL"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                >
+                  {% for tag in logTags %}
+                  <option value="{{ tag }}">{{ tag }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="customLogTag"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Filter By Log Content
+                  <small>(will perform regex filtering)</small></label
+                >
+                <input
+                  type="text"
+                  name="customLogTag"
+                  id="customLogTag"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+          <button
+            type="submit"
+            class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+            value="upload"
+            name="upload"
+          >
+            Fetch Logs
+          </button>
+        </div>
+
+        {% if logs != None %}
+        <div id="logs-visualizer" class="bg-gray-50">
+          <div
+            class="bg-white px-4 py-5 sm:p-6 grid grid-rows-6 gap-5 h-25"
+            style="height: 50vh; overflow-y: scroll"
+          >
+            <code>
+              {% for line in logs %}
+              <div>
+                >>
+                <span style="color: rgb(16 185 129)">{{ line[:24] }} </span> -
+                {{ line[24::] }}
+              </div>
+              {% endfor %}
+            </code>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- <script>
+  window.onload = () => {
+    const logForm = document.getElementById("logForm");
+    if (!logForm) return;
+    logForm.onsubmit = async (event) => {
+      event.preventDefault();
+      const logTag = document.getElementById("logTag").value;
+      if (!logTag) {
+        alert("Choose a tag before submitting!");
+      }
+      const response = await fetch(`/logs?tag=${logTag}&doneThrough=js`, {
+        method: "POST",
+      });
+      if (!response.ok) {
+        alert("Failed to get logs!");
+        return;
+      }
+    };
+  };
+</script> -->
+
+{% endblock %}

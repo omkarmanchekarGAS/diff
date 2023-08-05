@@ -1,0 +1,11 @@
+Package: kernel
+Version: 5.10.161-1-c6d60e8dcf20ef3ead5f882b1ce1595b
+Depends: libc
+Source: package/kernel/linux
+SourceName: kernel
+License: GPL-2.0
+Section: sys
+SourceDateEpoch: 1676992807
+Architecture: mipsel_24kc
+Installed-Size: 105
+Description:  Virtual kernel package

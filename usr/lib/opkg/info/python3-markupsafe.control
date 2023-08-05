@@ -1,0 +1,13 @@
+Package: python3-markupsafe
+Version: 2.1.0-1
+Depends: libc, python3-light
+Source: feeds/packages/lang/python/MarkupSafe
+SourceName: python3-markupsafe
+License: BSD-3-Clause
+LicenseFiles: LICENSE.rst
+Section: lang
+SourceDateEpoch: 1645713996
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 12298
+Description:  MarkupSafe implements a text object that escapes characters so it is safe to use in HTML and XML.

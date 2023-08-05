@@ -1,0 +1,15 @@
+Package: python3-flask
+Version: 2.0.2-3
+Depends: libc, python3-asyncio, python3-click, python3-codecs, python3-decimal, python3-itsdangerous, python3-jinja2, python3, python3-logging, python3-markupsafe, python3-multiprocessing, python3-setuptools, python3-werkzeug
+Source: feeds/packages/lang/python/Flask
+SourceName: python3-flask
+License: BSD-3-Clause
+LicenseFiles: LICENSE.rst
+Section: lang
+SourceDateEpoch: 1648163247
+CPE-ID: cpe:/a:palletsprojects:flask
+Maintainer: Josef Schlehofer <josef.schlehofer@nic.cz>
+Architecture: mipsel_24kc
+Installed-Size: 106641
+Description:  Flask is a microframework for Python based on Werkzeug, Jinja 2 and good
+ intentions. And before you ask: It.s BSD licensed!

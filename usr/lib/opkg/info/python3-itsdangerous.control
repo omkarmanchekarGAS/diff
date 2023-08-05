@@ -1,0 +1,13 @@
+Package: python3-itsdangerous
+Version: 2.0.1-1
+Depends: libc, python3-light
+Source: feeds/packages/lang/python/itsdangerous
+SourceName: python3-itsdangerous
+License: BSD-3-Clause
+LicenseFiles: LICENSE
+Section: lang
+SourceDateEpoch: 1627787722
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 18596
+Description:  Various helpers to pass trusted data to untrusted environments and back.

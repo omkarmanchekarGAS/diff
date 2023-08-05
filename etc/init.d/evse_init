@@ -1,0 +1,77 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=20
+
+USE_PROCD=1
+
+
+start_service() {
+
+    sleep 10
+
+    # enable GPIO 3.3
+    chmod 777 /sys/class/gpio/export
+    echo "483" > /sys/class/gpio/export
+    echo "out" > /sys/class/gpio/gpio483/direction
+    echo "1" > /sys/class/gpio/gpio483/value
+
+    # enable cell modem
+    echo "482" > /sys/class/gpio/export
+    echo "out" > /sys/class/gpio/gpio482/direction
+    echo "0" > /sys/class/gpio/gpio482/value
+    sleep 0.5
+    echo "1" > /sys/class/gpio/gpio482/value
+    sleep 0.5
+    echo "0" > /sys/class/gpio/gpio482/value
+
+
+    # send turn on pulses to STPM
+    python /root/enable_stpm.py
+
+    # load EEPROM stuff
+    python /root/eeprom_script.py
+
+    # preliminary RTC script
+    python /root/RTC_script.py
+
+    # start dashboard
+    # export FLASK_APP=/root/flaskr/app.py
+    # flask run -h 0.0.0.0 -p 80 &
+    # sleep 30
+
+    # start timer to kill dashboard
+    ./root/dash_timer.sh &
+
+    python /root/time_updater.py &
+
+    # check if we need to upgrade firmware
+    python /root/upgrade_firmware.py &
+
+    # start output drivers
+    python /root/rate_driver.py &
+    python /root/topline_driver.py &
+
+    # i2c driver
+    python /root/i2cDriver.py &
+    sleep 30
+
+    # setup wifi and provision
+    python /root/wifi_config.py & 
+
+    # handle if ocpp needs to be started
+    python /root/start_ocpp.py &
+
+    sleep 10
+
+    python /root/llm.py &
+
+}
+
+reload_service() {
+    reboot
+}
+
+stop_service() {
+    reboot
+}

@@ -1,0 +1,15 @@
+Package: libncurses6
+Version: 6.3-230103.01461
+Depends: libc, terminfo
+Provides: libncursesw, libncurses, libncursesw6
+Source: package/libs/ncurses
+SourceName: libncurses
+License: MIT
+LicenseFiles: README
+Section: libs
+SourceDateEpoch: 1676992807
+ABIVersion: 6
+CPE-ID: cpe:/a:gnu:ncurses
+Architecture: mipsel_24kc
+Installed-Size: 149420
+Description:  Terminal handling library (Unicode)

@@ -1,0 +1,808 @@
+{% extends 'base.html' %} {% block content %}
+
+<script>
+  var success = "{{ success }}";
+  console.log(success);
+  if (success == "True") {
+    alert("Data uploaded successfully.");
+  }
+  else if (success == "Uploaded") {
+    alert("WARNING: DO NOT POWER OFF THE UNIT WHILE IT IS FLASHING");
+  }
+</script>
+{% if error!=None %}
+<div class="rounded-md bg-red-50 p-4">
+  <div class="flex">
+    <div class="flex-shrink-0">
+      <svg
+        class="h-5 w-5 text-red-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
+    <div class="ml-3">
+      <h3 class="text-sm font-medium text-red-800">
+        There were errors with your submission
+      </h3>
+      <div class="mt-2 text-sm text-red-700">
+        <ul role="list" class="list-disc space-y-1 pl-5">
+          {%for key,val in error.items()%} {% if key != 'error' %}
+          <li>"{{ key }}":"{{ val }}"</li>
+          {%endif%} {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="text-center">
+  <h1 class="text-3xl text-slate-700 font-medium">OCPP Settings</h1>
+</div>
+
+<div class="hidden sm:block" aria-hidden="true">
+  <div class="py-5">
+    <div class="border-t border-gray-200"></div>
+  </div>
+</div>
+
+<div class="mt-10 sm:mt-0">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Service Settings
+        </h3>
+      </div>
+    </div>
+    <div class="mt-5 md:col-span-2 md:mt-0">
+      <div class="overflow-hidden shadow sm:rounded-md">
+        <form method="POST" action="/ocpp?f=ocpp.service" id="Service Settings">
+          <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="csid"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Charging Station ID</label
+              >
+              <input
+                type="text"
+                name="csid"
+                id="csid"
+                value="{{data[0][3]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="csu"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Central System URL</label
+              >
+              <input
+                type="text"
+                name="csu"
+                id="csu"
+                value="{{data[0][4]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+
+            <!--<div class="col-span-6 sm:col-span-2">
+              <label
+                for="serial number"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Boot Notification Interval</label
+              >
+              <input
+                type="number"
+                name="bni"
+                id="bni"
+                autocomplete=""
+                value="{{data[0][16]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="bnr"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Boot Notification Retries</label
+              >
+              <input
+                type="number"
+                name="bnr"
+                id="bnr"
+                autocomplete="bnr"
+                value="{{data[0][17]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="pdut"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >PDU Timeout</label
+              >
+              <input
+                type="number"
+                name="pdut"
+                id="pdut"
+                autocomplete="pdut"
+                value="{{data[0][18]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="ct"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Connection Timeout</label
+              >
+              <input
+                type="number"
+                name="ct"
+                id="ct"
+                autocomplete="ct"
+                value="{{data[0][24]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="msd"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Minimum Status Duration</label
+              >
+              <input
+                type="number"
+                name="msd"
+                id="msd"
+                autocomplete=""
+                value="{{data[0][28]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="wpi"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Websocket Ping Interval</label
+              >
+              <input
+                type="number"
+                name="wpi"
+                id="wpi"
+                autocomplete="wpi"
+                value="{{data[0][29]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="rr"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Reset Retries</label
+              >
+              <input
+                type="number"
+                name="rr"
+                id="rr"
+                autocomplete="rr"
+                value="{{data[0][30]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>-->
+            <div class="col-span-6 sm:col-span-6">
+              <label
+                for="chl"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >List of Children</label
+              >
+              <input
+                type="text"
+                name="chl"
+                id="chl"
+                value="{{data[0][58]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+            <button
+              type="submit"
+              value="upload"
+              name="upload"
+              class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hidden sm:block" aria-hidden="true">
+  <div class="py-5">
+    <div class="border-t border-gray-200"></div>
+  </div>
+</div>
+
+<div class="mt-10 sm:mt-0">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Firmware Settings
+        </h3>
+      </div>
+    </div>
+    
+    <div class="mt-5 md:col-span-2 md:mt-0">
+      <div class="overflow-hidden shadow sm:rounded-md">
+        <form method="POST" action="/ocpp/" enctype = "multipart/form-data">
+          <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+            <div class="col-span-6 sm:col-span-3">
+              <label
+                for="firm"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Upload Firmware File</label
+              >
+              <input
+                type="file"
+                name="firm"
+                id="firm"
+                accept =".bin"
+                class="block text-sm font-medium leading-6 text-gray-900 py-5"
+              >
+            </input>
+          </div>
+          </div>
+          <div class="inline-grid justify-between bg-gray-50 px-4 py-3 text-right sm:px-6">
+            <label class="inline-flex text-sm font-medium text-red-400 mr-50"
+                >WARNING: Do not power off the unit or close this browser while the unit is flashing</label
+              >
+            <button
+              type="submit"
+              class="inline-flex rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+              value="file"
+              name="file"
+            >
+              Flash
+            </button>
+          </div>
+        </form>
+      </div>
+        <div class="hidden sm:block" aria-hidden="true">
+          <div class="py-2"></div>
+        </div>
+        <div class="overflow-hidden shadow sm:rounded-md">
+        <form method="POST" action="/ocpp?f=ocpp.firmware">
+          <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+            <!--<div class="col-span-6 sm:col-span-2">
+              <label
+                for="fdi"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Firmware Download Interval</label
+              >
+              <input
+                type="number"
+                name="fdi"
+                id="fdi"
+                value="{{data[0][19]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="fdr"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Firmware Download Retries</label
+              >
+              <input
+                type="number"
+                name="fdr"
+                id="fdr"
+                autocomplete="fdr"
+                value="{{data[0][20]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>-->
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="ffu"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Firmware FTP Username</label
+              >
+              <input
+                type="text"
+                name="ffu"
+                id="ffu"
+                autocomplete="ffu"
+                value="{{data[0][14]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+              <label
+                for="ffp"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Firmware FTP Password</label
+              >
+              <input
+                type="text"
+                name="ffp"
+                id="ffp"
+                autocomplete="ffp"
+                value="{{data[0][15]}}"
+                class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+            <button
+              type="submit"
+              value="upload"
+              name="upload"
+              class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--<div class="hidden sm:block" aria-hidden="true">
+    <div class="py-5">
+      <div class="border-t border-gray-200"></div>
+    </div>
+  </div>
+
+  <div class="mt-10 sm:mt-0">
+    <div class="md:grid md:grid-cols-3 md:gap-6">
+      <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">
+            Diagnostic Settings
+          </h3>
+        </div>
+      </div>
+      <div class="mt-5 md:col-span-2 md:mt-0">
+        <div class="overflow-hidden shadow sm:rounded-md">
+          <form method="POST" action="/ocpp?f=ocpp.diagnostic">
+            <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="udi"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Upload Diagnostic Interval</label
+                >
+                <input
+                  type="number"
+                  name="udi"
+                  id="udi"
+                  value="{{data[0][21]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="udr"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Upload Diagnostic Retries</label
+                >
+                <input
+                  type="number"
+                  name="udr"
+                  id="udr"
+                  value="{{data[0][22]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <button
+                type="submit"
+                value="upload"
+                class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+  <div class="hidden sm:block" aria-hidden="true">
+    <div class="py-5">
+      <div class="border-t border-gray-200"></div>
+    </div>
+  </div>
+
+  <div class="mt-10 sm:mt-0">
+    <div class="md:grid md:grid-cols-3 md:gap-6">
+      <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">
+            Meter Values Settings
+          </h3>
+        </div>
+      </div>
+      <div class="mt-5 md:col-span-2 md:mt-0">
+        <div class="overflow-hidden shadow sm:rounded-md">
+          <form method="POST" action="/ocpp?f=ocpp.meter" id="Meter Settings">
+            <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+              <!--<div class="col-span-6 sm:col-span-2">
+                <label
+                  for="cadi"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  ><br/>Clock-Aligned Data Interval</label
+                >
+                <input
+                  type="number"
+                  name="cadi"
+                  id="cadi"
+                  value="{{data[0][23]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="cmk"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  ><br/>Configuration Max Keys</label
+                >
+                <input
+                  type="number"
+                  name="cmk"
+                  id="cmk"
+                  value="{{data[0][25]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mcae"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Clock Aligned Elements</label
+                >
+                <input
+                  type="number"
+                  name="mcae"
+                  id="mcae"
+                  value="{{data[0][31]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mse"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  ><br/>Maximum Sampled Elements</label
+                >
+                <input
+                  type="number"
+                  name="mse"
+                  id="mse"
+                  value="{{data[0][32]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>-->
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="si"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Sampled Interval</label
+                >
+                <input
+                  type="number"
+                  name="si"
+                  id="si"
+                  value="{{data[0][33]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <!--<div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mstsde"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Stop Transaction Sampled Data Elements</label
+                >
+                <input
+                  type="number"
+                  name="mstsde"
+                  id="mstsde"
+                  value="{{data[0][37]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mstade"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Stop Transaction Aligned Data Elements</label
+                >
+                <input
+                  type="number"
+                  name="mstade"
+                  id="mstade"
+                  value="{{data[0][36]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="msfp"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Supported Feature Profiles</label
+                >
+                <input
+                  type="number"
+                  name="msfp"
+                  id="msfp"
+                  value="{{data[0][44]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>-->
+              <div class="col-span-6 sm:col-span-3">
+                <label
+                  for="sfp"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Supported Feature Profiles</label
+                >
+                <input
+                  type="text"
+                  name="sfp"
+                  id="sfp"
+                  value="{{data[0][38]}}"
+                  disabled
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <button
+                type="submit"
+                value="upload"
+                name="upload"
+                class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hidden sm:block" aria-hidden="true">
+    <div class="py-5">
+      <div class="border-t border-gray-200"></div>
+    </div>
+  </div>
+
+  <!--<div class="mt-10 sm:mt-0">
+    <div class="md:grid md:grid-cols-3 md:gap-6">
+      <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">
+            Session Settings
+          </h3>
+        </div>
+      </div>
+      <div class="mt-5 md:col-span-2 md:mt-0">
+        <div class="overflow-hidden shadow sm:rounded-md">
+          <form method="POST" action="/ocpp?f=ocpp.session">
+            <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="meis"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Max Energy on Invalid Session</label
+                >
+                <input
+                  type="number"
+                  name="meis"
+                  id="meis"
+                  value="{{data[0][27]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="tra"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Transaction Retry Attempts</label
+                >
+                <input
+                  type="number"
+                  name="tra"
+                  id="tra"
+                  value="{{data[0][39]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="tri"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Transaction Retry Interval</label
+                >
+                <input
+                  type="number"
+                  name="tri"
+                  id="tri"
+                  value="{{data[0][40]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <fieldset class="col-span-12">
+                <div class="space-y-5">
+                  <input name="stia" value="False" hidden />
+                  <div class="relative flex items-start">
+                    <div class="flex h-6 items-center">
+                      <input
+                        id="stia"
+                        aria-describedby="stia"
+                        name="stia"
+                        type="checkbox"
+                        class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-600"
+                        value="True"
+                      />
+                    </div>
+                    <div class="ml-3 text-sm leading-6">
+                      <label for="stia" class="font-medium text-gray-900"
+                        >Stop Transaction on Invalid Authorization</label
+                      >
+                    </div>
+                  </div>
+                  <input name="stevd" value="False" hidden />
+                  <div class="relative flex items-start">
+                    <div class="flex h-6 items-center">
+                      <input
+                        id="stevd"
+                        aria-describedby="stevd"
+                        name="stevd"
+                        type="checkbox"
+                        class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-600"
+                        value="True"
+                      />
+                    </div>
+                    <div class="ml-3 text-sm leading-6">
+                      <label for="stevd" class="font-medium text-gray-900"
+                        >Stop Transaction on EV Disconnect</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <button
+                type="submit"
+                value="upload"
+                class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="hidden sm:block" aria-hidden="true">
+      <div class="py-5">
+        <div class="border-t border-gray-200"></div>
+      </div>
+    </div>
+  </div>-->
+  <div class="mt-10 sm:mt-0">
+    <div class="md:grid md:grid-cols-3 md:gap-6">
+      <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">
+            Charging Profile Settings
+          </h3>
+        </div>
+      </div>
+      <div class="mt-5 md:col-span-2 md:mt-0">
+        <div class="overflow-hidden shadow sm:rounded-md">
+          <form method="POST" action="/ocpp?f=ocpp.charge" id="Charge Settings">
+            <div class="bg-white px-4 py-5 sm:p-6 grid grid-cols-6 gap-6">
+              <!--<div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mcpsl"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Charging Profile Stack Level</label
+                >
+                <input
+                  type="number"
+                  name="mcpsl"
+                  id="mcpsl"
+                  value="{{data[0][41]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>-->
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="acpu"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Allowed Charging Profile Units</label
+                >
+                <input
+                  type="text"
+                  name="acpu"
+                  id="acpu"
+                  value="{{data[0][42]}}"
+                  disabled
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <!--<div class="col-span-6 sm:col-span-2">
+                <label
+                  for="mcpsp"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Charging Profile Schedule Periods</label
+                >
+                <input
+                  type="number"
+                  name="mcpsp"
+                  id="mcpsp"
+                  value="{{data[0][43]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <label
+                  for="macp"
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  >Maximum Active Charging Profiles</label
+                >
+                <input
+                  type="number"
+                  name="macp"
+                  id="macp"
+                  value="{{data[0][44]}}"
+                  class="disabled:bg-gray-100 mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <button
+                type="submit"
+                value="upload"
+                class="inline-flex justify-center rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+              >
+                Save
+              </button>
+            </div>-->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="hidden sm:block" aria-hidden="true">
+  <div class="py-5">
+    <div class="border-t border-gray-200"></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+Package: python3-pkg-resources
+Version: 63.2.0-1
+Depends: libc, python3
+Source: feeds/packages/lang/python/python3
+SourceName: python3-pkg-resources
+License: MIT
+LicenseFiles: LICENSE
+Section: lang
+SourceDateEpoch: 1665503837
+CPE-ID: cpe:/a:python:python
+Maintainer: Jeffery To <jeffery.to@gmail.com>
+Architecture: mipsel_24kc
+Installed-Size: 285076
+Description:  Python 3.10 pkg_resources module (part of setuptools)

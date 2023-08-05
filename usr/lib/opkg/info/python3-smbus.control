@@ -1,0 +1,13 @@
+Package: python3-smbus
+Version: 4.3-1
+Depends: libc, libi2c, python3-light
+Source: feeds/packages/utils/i2c-tools
+SourceName: python3-smbus
+License: GPL-2.0-or-later LGPL-2.1-or-later
+LicenseFiles: COPYING COPYING.LGPL
+Section: lang
+SourceDateEpoch: 1627787682
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 4794
+Description:  This package contain the Python3 bindings for Linux SMBus access through i2c-dev.

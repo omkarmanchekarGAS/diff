@@ -1,0 +1,13 @@
+Package: libi2c
+Version: 4.3-1
+Depends: libc
+Source: feeds/packages/utils/i2c-tools
+SourceName: libi2c
+License: GPL-2.0-or-later LGPL-2.1-or-later
+LicenseFiles: COPYING COPYING.LGPL
+Section: libs
+SourceDateEpoch: 1627787682
+Maintainer: Daniel Golle <daniel@makrotopia.org>
+Architecture: mipsel_24kc
+Installed-Size: 1905
+Description:  This package contains i2c functionality needed by i2c-tools.
